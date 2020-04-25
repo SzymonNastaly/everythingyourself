@@ -65,17 +65,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'everythingyourself.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -115,6 +104,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 try:
-   from kaupapa.local_settings import *
+   from everythingyourself.local_settings import *
 except ImportError:
     raise Exception("A local_settings.py file is required to run this project")
