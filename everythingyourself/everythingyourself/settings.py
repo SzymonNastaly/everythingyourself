@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'videoCreator',
 ]
 
 MIDDLEWARE = [
@@ -103,6 +104,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# local settings should at least contain SECRET_KEY, DEBUG, DATABASES
 try:
    from everythingyourself.local_settings import *
 except ImportError:
