@@ -25,9 +25,11 @@ def create_video(request):
             id="2x3"
             videofile = render_video(id, fps=60)
 
-            with open(videofile, 'rb') as f:
-                response = HttpResponse(f, content_type=guess_type(videofile)[0])
+            video_path = os.path.join(BASE_DIR, videofile)
+            with open(video_path, 'rb') as f:
+                response = HttpResponse(f, content_type='video/mp4')
                 response['Content-Length'] = len(response.content)
+                response['Content-Disposition'] = 'attachment; filename=export-2x3.mp4'
                 return response
 
     uploadfaceform = UploadFaceForm()
