@@ -4,9 +4,13 @@ from PIL import Image
 import imageio
 import moviepy.editor as mpe
 
-def create_video(id, fps, greenscreen=(200, 5)):
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+def render_video(id, fps, greenscreen=(200, 5)):
     # open coordinates and parse into list of lists
-    with open('coordinates.txt') as f:
+    coordinates_path = os.path.join(BASE_DIR, 'videoCreator/coordinates.txt')
+    with open(coordinates_path) as f:
         lines = f.read().splitlines()
 
     coordinates = []
@@ -16,8 +20,8 @@ def create_video(id, fps, greenscreen=(200, 5)):
         coordinates.append(frame_coordinates)
 
     # create one image per coordinate
-    filename_face = 'face.png'
-    face = Image.open(filename_face, 'r').convert('RGBA')
+    face_path = os.path.join(BASE_DIR, 'media/faces/face.png')
+    face = Image.open(face_path, 'r').convert('RGBA')
 
     counter = 0
     for coord in coordinates:
@@ -31,12 +35,15 @@ def create_video(id, fps, greenscreen=(200, 5)):
             filename = '0{}'.format(counter)
         else:
             filename = '{}'.format(counter)
-        filepath = 'images/{}/{}.png'.format(id, filename)
+        # filepath = 'images/{}/{}.png'.format(id, filename)
+        part_path = 'media/created_images/{}'.format(filename)
+        filepath = os.path.join(BASE_DIR, part_path)
         whole_img.save(filepath, format="png")
         counter += 1
 
         # create video with greenscreen-bg of face-animation
-        direc = 'images/{}'.format(id)
+        # direc = 'images/{}'.format(id)
+        direc = os.path.join(BASE_DIR, 'media/created_images')
         files = os.listdir(direc)
         files.sort()
         images = []
@@ -58,3 +65,5 @@ def create_video(id, fps, greenscreen=(200, 5)):
         ]).set_duration(clip.duration)
         exportfile = 'export-{}.mp4'.format(id)
         final_clip.write_videofile(exportfile)
+
+        return exportfile

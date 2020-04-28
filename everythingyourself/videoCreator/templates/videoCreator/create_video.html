@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Video</title>
+</head>
+<body>
+    <h1>Here you can insert your face into a demo video!</h1>
+    <form action="/create/" method="post"  enctype="multipart/form-data">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+            {{UploadFaceForm.as_p}}
+            <input type="submit" value="Absenden" id="submit">
+    </form>
+</body>
+</html>
