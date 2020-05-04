@@ -106,6 +106,8 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+MEDIA_URL = '/media/'
+
 # local settings should at least contain SECRET_KEY, DEBUG, DATABASES
 try:
    from everythingyourself.local_settings import *
