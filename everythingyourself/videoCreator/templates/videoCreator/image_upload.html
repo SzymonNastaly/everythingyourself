@@ -86,14 +86,7 @@
         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
         <p><label for="id_face">Ihr Gesicht:</label> <input type="file" name="face" accept="image/*" required id="id_face" onchange="readURL(this);"></p>
         <img id="image" src="#" alt="Bitte ein Bild auswählen!" />
-        <br/><img id="imgex" src="/static/face.png" alt="">
-        <h3>Resultat</h3>
-        <p>
-          <button type="button" id="button">Ausschneiden</button>
-        </p>
-        <div id="result"></div>
         <br/><input type="submit" value="Absenden" id="submit">
-
     </form>
 
     <form>

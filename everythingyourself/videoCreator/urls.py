@@ -5,6 +5,7 @@ from . import views
 
 app_name = 'createVideo'
 urlpatterns = [
-    path('crop/<int:id>/', views.crop_image, name='crop_image'),
-    path('', views.upload_image, name='create_video'),
+    path('create/<int:id>', views.video_create, name='video_create'),
+    path('crop/<int:id>/', views.image_crop, name='image_crop'),
+    path('', views.image_upload, name='image_upload'),
 ]

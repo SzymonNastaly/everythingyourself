@@ -7,8 +7,5 @@ class VideoTemplate(models.Model):
     faces_count = models.IntegerField()
 
 class FaceInsert(models.Model):
-    faces = ArrayField(
-        models.FileField(),
-    )
     template = models.ForeignKey(VideoTemplate, on_delete=models.PROTECT)
     creation_datetime = models.DateTimeField(auto_now_add=True)

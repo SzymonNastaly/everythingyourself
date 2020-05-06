@@ -17,7 +17,7 @@ from .models import VideoTemplate, FaceInsert
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-def create_video(id, fps=60):
+def video_create(request, id, fps=60):
     """
     Calls function to render video and returns path to it.
     :param id: ID of face insert instance
@@ -26,17 +26,21 @@ def create_video(id, fps=60):
     """
     videofile = render_video(id, fps=60)
     video_path = os.path.join(BASE_DIR, videofile)
-    return video_path
+
+    with open(video_path, 'rb') as f:
+        response = HttpResponse(f, content_type='video/mp4')
+        response['Content-Length'] = len(response.content)
+        response['Content-Disposition'] = 'attachment; filename=export-face.mp4'
+        return response
 
 
-def upload_image(request):
+def image_upload(request):
     if request.method == 'POST':
         form = UploadFaceForm(request.POST, request.FILES)
         if form.is_valid():
-            faces = "{}"
             template = VideoTemplate.objects.get(name="test1")
 
-            insert = FaceInsert(faces=faces, template=template)
+            insert = FaceInsert(template=template)
             insert.save()
             id = insert.id
 
@@ -51,31 +55,26 @@ def upload_image(request):
             return redirect(redirect_url)
 
     uploadfaceform = UploadFaceForm()
-    return render(request, 'videoCreator/create_video.html', {'UploadFaceForm': uploadfaceform})
+    return render(request, 'videoCreator/image_upload.html', {'UploadFaceForm': uploadfaceform})
 
 
-def crop_image(request, id):
+def image_crop(request, id):
     if request.method == 'POST':
         form = CropFaceForm(request.POST, request.FILES)
         if form.is_valid():
             data = form.cleaned_data['imagefield']
-            format, imgstring = data.split(';base64,')
-            ext = format.split('/')[-1]
+            formatinfo, imgstring = data.split(';base64,')
+            ext = formatinfo.split('/')[-1]
 
             image = ContentFile(base64.b64decode(imgstring), name='temp.' + ext)
             filename = 'cropped-img_{}'.format(id)
             tmp_path = 'faces/{}.png'.format(filename)
             path = default_storage.save(tmp_path, image)
 
-        # video_path = create_video(id=id, fps=60)
-        #
-        # with open(video_path, 'rb') as f:
-        #     response = HttpResponse(f, content_type='video/mp4')
-        #     response['Content-Length'] = len(response.content)
-        #     response['Content-Disposition'] = 'attachment; filename=export-2x3.mp4'
-        #     return response
+            host = HttpRequest.get_host(request)
+            redirect_url = 'http://{}/create/create/{}'.format(host, id)
+            return redirect(redirect_url)
 
-    insert = FaceInsert.objects.get(id=id)
     filename = 'original-img_{}'.format(id)
     host = HttpRequest.get_host(request)
     path = 'http://{}/media/faces/{}.png'.format(host, filename)

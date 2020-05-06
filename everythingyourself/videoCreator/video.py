@@ -20,7 +20,8 @@ def render_video(id, fps, greenscreen=(200, 5)):
         coordinates.append(frame_coordinates)
 
     # create one image per coordinate
-    face_path = os.path.join(BASE_DIR, 'media/faces/face.png')
+    tmp_face_path = 'media/faces/cropped-img_{}.png'.format(id)
+    face_path = os.path.join(BASE_DIR, tmp_face_path)
     face = Image.open(face_path, 'r').convert('RGBA')
 
     counter = 0
@@ -55,7 +56,7 @@ def render_video(id, fps, greenscreen=(200, 5)):
         if file_name.endswith('.png'):
             file_path = os.path.join(direc, file_name)
             images.append(imageio.imread(file_path))
-    facevideo = 'greenscreen-{}.mp4'.format(id)
+    facevideo = 'media/created_videos/greenscreen-{}.mp4'.format(id)
     imageio.mimsave(facevideo, images, fps=fps)
 
     # lay greenscreen video over background and export resulting video
@@ -67,7 +68,7 @@ def render_video(id, fps, greenscreen=(200, 5)):
         background,
         masked_clip
     ]).set_duration(clip.duration)
-    exportfile = 'export-{}.mp4'.format(id)
+    exportfile = 'media/created_videos/export-{}.mp4'.format(id)
     final_clip.write_videofile(exportfile)
 
     return exportfile

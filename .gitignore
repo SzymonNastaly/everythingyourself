@@ -130,3 +130,6 @@ dmypy.json
 
 # Pycharm stuff
 .idea
+
+# User uploads/creations
+everythingyourself/media/
