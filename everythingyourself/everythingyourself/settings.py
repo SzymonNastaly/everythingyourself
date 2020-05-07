@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+import django_heroku
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -21,6 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 ALLOWED_HOSTS = []
+
+DEBUG = True
 
 
 # Application definition
@@ -108,8 +112,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
 
+# Activate Django-Heroku.
+django_heroku.settings(locals())
+
 # local settings should at least contain SECRET_KEY, DEBUG, DATABASES
-try:
-   from everythingyourself.local_settings import *
-except ImportError:
-    raise Exception("A local_settings.py file is required to run this project")
+if DEBUG:
+    try:
+       from everythingyourself.local_settings import *
+    except ImportError:
+        raise Exception("A local_settings.py file is required to run this project")
