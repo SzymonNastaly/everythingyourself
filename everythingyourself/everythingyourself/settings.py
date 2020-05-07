@@ -114,6 +114,7 @@ MEDIA_URL = '/media/'
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
+DEBUG = os.environ['DEBUG']
 
 # local settings should at least contain SECRET_KEY, DEBUG, DATABASES
 if DEBUG:
