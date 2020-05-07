@@ -117,8 +117,8 @@ django_heroku.settings(locals())
 DEBUG = os.environ['DEBUG']
 
 # local settings should at least contain SECRET_KEY, DEBUG, DATABASES
-if DEBUG:
-    try:
-       from everythingyourself.local_settings import *
-    except ImportError:
-        raise Exception("A local_settings.py file is required to run this project")
+# if DEBUG:
+#     try:
+#        from everythingyourself.local_settings import *
+#     except ImportError:
+#         raise Exception("A local_settings.py file is required to run this project")
