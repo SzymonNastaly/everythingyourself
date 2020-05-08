@@ -1,1 +1,1 @@
-web: gunicorn everythingyourself.wsgi
+web: gunicorn everythingyourself.everythingyourself.wsgi
