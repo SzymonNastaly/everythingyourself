@@ -115,6 +115,22 @@ MEDIA_URL = '/media/'
 # Activate Django-Heroku.
 django_heroku.settings(locals())
 DEBUG = os.environ['DEBUG']
+SECRET_KEY = os.environ['SECRET_KEY']
+
+dbname = os.environ['DBNAME']
+dbuser = os.environ['DBUSER']
+dbpassword = os.environ['DBPASSWORD']
+host = os.environ['DBHOST']
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': dbname,
+        'USER': dbuser,
+        'PASSWORD': dbpassword,
+        'HOST': host,
+        'PORT': '5432',
+    }
+}
 
 # local settings should at least contain SECRET_KEY, DEBUG, DATABASES
 # if DEBUG:
