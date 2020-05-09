@@ -6,62 +6,6 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
     <script>
-        function getRoundedCanvas(sourceCanvas) {
-          var canvas = document.createElement('canvas');
-          var context = canvas.getContext('2d');
-          var width = sourceCanvas.width;
-          var height = sourceCanvas.height;
-
-          canvas.width = width;
-          canvas.height = height;
-          context.imageSmoothingEnabled = true;
-          context.drawImage(sourceCanvas, 0, 0, width, height);
-          context.globalCompositeOperation = 'destination-in';
-          context.beginPath();
-          context.arc(width / 2, height / 2, Math.min(width, height) / 2, 0, 2 * Math.PI, true);
-          context.fill();
-          return canvas;
-        }
-
-        function createCropper() {
-          var image = document.getElementById('image');
-          console.log(image);
-          var button = document.getElementById('button');
-          var result = document.getElementById('result');
-          var croppable = false;
-          var cropper = new Cropper(image, {
-            aspectRatio: 1,
-            viewMode: 1,
-            ready: function () {
-              croppable = true;
-            },
-          });
-          console.log(cropper);
-
-          button.onclick = function () {
-            var croppedCanvas;
-            var roundedCanvas;
-            var roundedImage;
-
-            if (!croppable) {
-              return;
-            }
-
-            // Crop
-            croppedCanvas = cropper.getCroppedCanvas();
-
-            // Round
-            roundedCanvas = getRoundedCanvas(croppedCanvas);
-
-            // Show
-            roundedImage = document.createElement('img');
-            roundedImage.src = roundedCanvas.toDataURL()
-            result.innerHTML = '';
-            result.appendChild(roundedImage);
-            };
-        };
-
-
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -69,12 +13,11 @@
                 reader.onload = function (e) {
                     $('#image')
                         .attr('src', e.target.result)
-                        .width(150)
-                        .height(200);
+                        .width(auto)
+                        .height(auto);
                 };
 
                 reader.readAsDataURL(input.files[0]);
-                createCropper();
             }
         };
 
