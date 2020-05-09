@@ -38,7 +38,7 @@ def image_upload(request):
     if request.method == 'POST':
         form = UploadFaceForm(request.POST, request.FILES)
         if form.is_valid():
-            template = VideoTemplate.objects.get(name="test1")
+            template = VideoTemplate.objects.get(id="1")
 
             insert = FaceInsert(template=template)
             insert.save()

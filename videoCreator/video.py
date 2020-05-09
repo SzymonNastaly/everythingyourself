@@ -4,6 +4,8 @@ from PIL import Image
 import imageio
 import moviepy.editor as mpe
 
+from .models import VideoTemplate, FaceInsert
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -59,6 +61,9 @@ def render_video(id, fps, greenscreen=(200, 5)):
     imageio.mimsave(facevideo, images, fps=fps)
 
     # lay greenscreen video over background and export resulting video
+    faceinsert = FaceInsert.objects.get(id=id)
+    template = faceinsert.template
+    tmp_background_path = 'media/background/{}'.format(template.background_clip)
     background_path = os.path.join(BASE_DIR, 'media/background/bg_clip.mp4')
     background = mpe.VideoFileClip(background_path)
     clip = mpe.VideoFileClip(facevideo)
