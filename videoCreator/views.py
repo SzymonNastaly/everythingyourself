@@ -1,6 +1,7 @@
 from mimetypes import guess_type
 import os
 import base64
+import django_heroku
 
 
 from django.http import HttpResponse
@@ -49,9 +50,13 @@ def image_upload(request):
             tmp_path = 'faces/{}.png'.format(filename)
             path = default_storage.save(tmp_path, ContentFile(data.read()))
 
-
+            django_heroku.settings(locals())
+            is_production = os.environ['PRODUCTION']
             host = HttpRequest.get_host(request)
-            redirect_url = 'http://{}/create/crop/{}'.format(host, id)
+            if is_production:
+                redirect_url = 'https://{}/create/crop/{}'.format(host, id)
+            else:
+                redirect_url = 'http://{}/create/crop/{}'.format(host, id)
             return redirect(redirect_url)
 
     uploadfaceform = UploadFaceForm()
@@ -59,6 +64,8 @@ def image_upload(request):
 
 
 def image_crop(request, id):
+    django_heroku.settings(locals())
+    is_production = os.environ['PRODUCTION']
     if request.method == 'POST':
         form = CropFaceForm(request.POST, request.FILES)
         if form.is_valid():
@@ -72,12 +79,18 @@ def image_crop(request, id):
             path = default_storage.save(tmp_path, image)
 
             host = HttpRequest.get_host(request)
-            redirect_url = 'http://{}/create/create/{}'.format(host, id)
+            if is_production:
+                redirect_url = 'https://{}/create/create/{}'.format(host, id)
+            else:
+                redirect_url = 'http://{}/create/create/{}'.format(host, id)
             return redirect(redirect_url)
 
     filename = 'original-img_{}'.format(id)
     host = HttpRequest.get_host(request)
-    path = 'http://{}/media/faces/{}.png'.format(host, filename)
+    if is_production:
+        path = 'https://{}/media/faces/{}.png'.format(host, filename)
+    else:
+        path = 'http://{}/media/faces/{}.png'.format(host, filename)
     # path = os.path.join(BASE_DIR, tmp_path)
 
     return render(request, 'videoCreator/image_crop.html', {'imgsrc': path, 'id': id})
