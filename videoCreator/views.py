@@ -50,7 +50,6 @@ def image_upload(request):
             tmp_path = 'faces/{}.png'.format(filename)
             path = default_storage.save(tmp_path, ContentFile(data.read()))
 
-            django_heroku.settings(locals())
             is_production = os.environ['PRODUCTION']
             host = HttpRequest.get_host(request)
             if is_production:
@@ -64,7 +63,6 @@ def image_upload(request):
 
 
 def image_crop(request, id):
-    django_heroku.settings(locals())
     is_production = os.environ['PRODUCTION']
     if request.method == 'POST':
         form = CropFaceForm(request.POST, request.FILES)
