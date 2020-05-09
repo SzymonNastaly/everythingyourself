@@ -1,1 +1,1 @@
-web: gunicorn everythingyourself.wsgi --log-file -
+web: gunicorn everythingyourself.everythingyourself.wsgi:videoCreator --log-file -
