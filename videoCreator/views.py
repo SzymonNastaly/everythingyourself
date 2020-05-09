@@ -10,7 +10,7 @@ from django.core.files.base import ContentFile
 from django.http.request import HttpRequest
 from django.shortcuts import redirect
 
-from .video  import render_video, test_special
+from .video  import render_video
 from .forms import UploadFaceForm, CropFaceForm
 from .models import VideoTemplate, FaceInsert
 
@@ -24,8 +24,7 @@ def video_create(request, id, fps=60):
     :param fps: frames per second of
     :return: video
     """
-    #videofile = render_video(id, fps=60)
-    videofile = test_special()
+    videofile = render_video(id, fps=60)
     video_path = os.path.join(BASE_DIR, videofile)
 
     with open(video_path, 'rb') as f:

@@ -26,7 +26,6 @@ def render_video(id, fps, greenscreen=(200, 5)):
 
     counter = 0
     for coord in coordinates:
-        print("start of loop")
         whole_img = Image.new('RGBA', (1280, 720), (0, 255, 0, 255))
         whole_img.paste(face, coord, face)
         if counter < 10:
@@ -63,23 +62,6 @@ def render_video(id, fps, greenscreen=(200, 5)):
     background_path = os.path.join(BASE_DIR, 'media/background/bg_clip.mp4')
     background = mpe.VideoFileClip(background_path)
     clip = mpe.VideoFileClip(facevideo)
-    masked_clip = clip.fx(mpe.vfx.mask_color, color=[0, 255, 0], thr=greenscreen[0], s=greenscreen[1])
-    final_clip = mpe.CompositeVideoClip([
-        background,
-        masked_clip
-    ]).set_duration(clip.duration)
-    exportfile = 'media/created_videos/export-{}.mp4'.format(id)
-    final_clip.write_videofile(exportfile)
-
-    return exportfile
-
-def test_special():
-    # lay greenscreen video over background and export resulting video
-    greenscreen = (200, 5)
-    id = 11
-    background_path = os.path.join(BASE_DIR, 'media/background/bg_clip.mp4')
-    background = mpe.VideoFileClip(background_path)
-    clip = mpe.VideoFileClip('media/created_videos/greenscreen-11.mp4')
     masked_clip = clip.fx(mpe.vfx.mask_color, color=[0, 255, 0], thr=greenscreen[0], s=greenscreen[1])
     final_clip = mpe.CompositeVideoClip([
         background,
