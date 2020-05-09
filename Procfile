@@ -1,1 +1,1 @@
-web: gunicorn everythingyourself.everythingyourself.wsgi
+web: gunicorn everythingyourself.wsgi --log-file -
