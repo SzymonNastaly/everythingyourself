@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'videoCreator',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -113,6 +114,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
 
+ASGI_APPLICATION = "everythingyourself.routing.application"
+
 # Activate Django-Heroku.
 django_heroku.settings(locals())
 DEBUG = os.environ['DEBUG']
@@ -131,6 +134,15 @@ DATABASES = {
         'HOST': host,
         'PORT': '5432',
     }
+}
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
 }
 
 # local settings should at least contain SECRET_KEY, DEBUG, DATABASES

@@ -25,6 +25,10 @@
     .cropper-face {
       border-radius: 50%;
     }
+    #download_btn {
+      display: none;
+    }
+
     /**************************\
   Basic Modal Styles
 \**************************/
@@ -196,11 +200,31 @@
           return canvas;
         }
         $(document).ready(function() {
-  MicroModal.init();
+  //MicroModal.init();
+  const id = document.getElementById('id_nr').textContent;
+
+      const ws = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/videoprogress/'
+            + id
+            + '/'
+        );
+       ws.onopen = function () {
+       ws.send({message: "pong"});
+       };
+
+      ws.onmessage = function(e) {
+            alert("jej")
+            //const is_ready = JSON.parse(e.is_ready);
+            //if(is_ready == True){
+            //    document.getElementById("download_btn").style.display = "inline";
+            // }
+        };
+
 });
 
       window.addEventListener('DOMContentLoaded', function () {
-      MicroModal.init();
       var image = document.getElementById('image');
       var button = document.getElementById('button');
       var result = document.getElementById('result');
@@ -240,11 +264,11 @@
 
       };
     });
-
     </script>
 </head>
 <body>
     <h1>Crop The Image</h1>
+    <p>Nr.</p><p id="id_nr">{{id}}</p>
     <div style="max-height: 400px;">
       <img src="{{imgsrc}}" alt="" id="image" height="auto" width="100%">
     </div>
@@ -267,9 +291,10 @@
       </header>
       <main class="modal__content" id="modal-1-content">
         <p>
-        Das Video wird nun geschnitten! Einfach kurz warten. (wenn das Video fertig ist, wird es automatisch
-            heruntergeladen.
+        Das Video wird nun geschnitten! Einfach kurz warten. Sobald das Video fertig ist,
+            erscheint hier ein Download-Button.
         </p>
+        <button id="download_btn">Video herunterladen</button>
       </main>
       <footer class="modal__footer">
         <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Schließen</button>

@@ -46,7 +46,6 @@ def render_video(id, fps, greenscreen=(200, 5)):
 
 
     # create video with greenscreen-bg of face-animation
-    # direc = 'images/{}'.format(id)
     direc = os.path.join(BASE_DIR, 'media/created_images')
     files = os.listdir(direc)
     files.sort()
